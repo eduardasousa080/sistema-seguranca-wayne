@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Recursos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gráfico de Recursos</h1>
+    <canvas id="resourceChart"></canvas>
+    <canvas id="resourceTypeChart"></canvas>
+    <canvas id="resourceDescriptionChart"></canvas>
+
+    <script>
+        const ctx1 = document.getElementById('resourceChart').getContext('2d');
+        const resources = {{ resources|tojson }};
+        
+        const labels = resources.map(resource => resource[0]); // Nome do recurso
+        const data = resources.map(resource => resource[1]); // Quantidade total do recurso
+
+        const resourceChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Quantidade de Recursos por Nome',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfico para tipos de recursos
+        const ctx2 = document.getElementById('resourceTypeChart').getContext('2d');
+        const resourceTypes = {{ resource_types|tojson }};
+        const typeLabels = resourceTypes.map(type => type[0]); // Tipo do recurso
+        const typeData = resourceTypes.map(type => type[1]); // Quantidade total por tipo
+
+        const resourceTypeChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: typeLabels,
+                datasets: [{
+                    label: 'Quantidade de Recursos por Tipo',
+                    data: typeData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Gráfico para descrições de recursos
+        const ctx3 = document.getElementById('resourceDescriptionChart').getContext('2d');
+        const resourceDescriptions = {{ resource_descriptions|tojson }};
+        const descriptionLabels = resourceDescriptions.map(desc => desc[0]); // Descrição do recurso
+        const descriptionData = resourceDescriptions.map(desc => desc[1]); // Quantidade total por descrição
+
+        const resourceDescriptionChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: descriptionLabels,
+                datasets: [{
+                    label: 'Quantidade de Recursos por Descrição',
+                    data: descriptionData,
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

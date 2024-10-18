@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Dashboard</h2>
+    <div class="text-center">
+        <a href="{{ url_for('resources_management') }}" class="btn btn-primary">Gerenciar Recursos</a>
+        <a href="{{ url_for('resource_chart') }}" class="btn btn-secondary">Visualizar Recursos em Gráfico</a>
+    </div>
+</div>
+{% endblock %}
